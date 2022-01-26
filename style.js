@@ -31,12 +31,17 @@ const { uploadimg, upload } = require('./lib/uploadimg')
 const { pinterest, wallpaper, wikimedia, porno, hentai, quotesAnime } = require('./lib/scraper')
 const { smsg, getGroupAdmins, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, delay, format, logic, generateProfilePicture, parseMention, getRandom } = require('./lib/myfunc')
 const setting = JSON.parse(fs.readFileSync('./settings.json'))
+const { simih } = require('./lib/functions')
 botname = setting.namabot
 const fake = 'AGUS STYLE - Bot MD'
 ownerNumber = ["6282268562601@s.whatsapp.net"]
 modelmenu = 'gif'
 apikeyy = 'sQMpXbHimbTkxGC'
-
+angka = ['1','2','3','4','5','6','7','8','9']
+randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+//UH
+const ban = JSON.parse(fs.readFileSync('./database/banned.json'))
 
 module.exports = style = async (style, m, chatUpdate) => {
     try {
@@ -55,15 +60,15 @@ module.exports = style = async (style, m, chatUpdate) => {
         const pushname = m.pushName || "No Name"
         const isGroup = m.key.remoteJid.endsWith('@g.us')
         const isCreator = [style.user.id, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        const isBanned = ban.includes(m.sender)
         const itsMe = m.sender == style.user.id ? true : false
         const text = args.join(" ")
         const q = args.join(" ")
         const aq = args.join(" ")
         const quoted = m.quoted ? m.quoted : m
         const mime = (quoted.msg || quoted).mimetype || ''
-	    const isMedia = /image|video|sticker|audio/.test(mime)
-	    
-	     
+	    const isMedia = /image|video|sticker|audio/.test(mime)	    	            
+	               
 	    // Group
         const groupMetadata = m.isGroup ? await style.groupMetadata(m.chat).catch(e => {}) : ''
         const groupName = m.isGroup ? groupMetadata.subject : ''
@@ -103,10 +108,39 @@ module.exports = style = async (style, m, chatUpdate) => {
             return await generateWAMessage(jidnya, kontennya, {...optionnya,userJid: style.authState.creds.me.id,upload: style.waUploadToServer})
             }
 			
-			
-	
-			
-            
+//=================( STICKER )=================//
+
+const sticOwner = (hehe) => {
+ano = fs.readFileSync('./lib/sticker/owner.webp')
+style.sendMessage(hehe, ano, sticker, { quoted: m})
+}
+const sticWait = (hehe) => {
+ano = fs.readFileSync('./lib/sticker/wait.webp')
+style.sendMessage(hehe, ano, sticker, { quoted: m})
+}
+const sticLoad = (hehe) => {
+ano = fs.readFileSync('./lib/sticker/loading.webp')
+style.sendMessage(hehe, ano, sticker, { quoted: m})
+}
+const sticGroup = (hehe) => {
+ano = fs.readFileSync('./lib/sticker/group.webp')
+style.sendMessage(hehe, ano, sticker, { quoted: m})
+}
+const sticBotAdmin = (hehe) => {
+ano = fs.readFileSync('./lib/sticker/botadmin.webp')
+style.sendMessage(hehe, ano, sticker, { quoted: m})
+}
+const sticBanned = (hehe) => {
+ano = fs.readFileSync('./lib/sticker/banned.webp')
+style.sendMessage(hehe, ano, sticker, { quoted: m})
+}
+const sticAdmin = (hehe) => {
+ano = fs.readFileSync('./lib/sticker/admin.webp')
+style.sendMessage(hehe, ano, sticker, { quoted: m})
+}
+
+//=================( BATASNYA )=========
+			            
         const sendFileFromUrl = async (from, url, caption, m, men) => {
             let mime = '';
             let res = await axios.head(url)
@@ -236,7 +270,7 @@ var Tanggal= "" + hari + ", " + tanggal + " " + bulan + " " + tahun;
                          
                          "surface": 200, 
                          "message": `Halo ${pushname}! dapet salam dari owner.`, 
-                         "orderTitle": 'dapet salam dari owner STYLE!', 
+                         "orderTitle": 'dapet salam dari owner GUS!', 
                          "sellerJid": '6285793887010@s.whatsapp.net'
                     } 
                           } 
@@ -256,7 +290,7 @@ var Tanggal= "" + hari + ", " + tanggal + " " + bulan + " " + tahun;
             await fs.writeFileSync(trueFileName, buffer)
             return trueFileName
            }
-//////////BUTTON BUATAN STYLE/////////////
+//////////BUTTON BUATAN GUS/////////////
  const sendButtonImg = async (id, text1, desc1, gus) => {
  //SendButtonImage
  var tes = await generateWAMessageFromContent(from, {
@@ -299,7 +333,7 @@ var buatpesan = await generateWAMessageFromContent(from, {
           {
             "urlButton": {
               "displayText": "My GITHUB",
-              "url": "https://github.com/gus-ID"
+              "url": "https://github.com/KepoLuh"
             }
           },
           {
@@ -388,11 +422,22 @@ Bot Admin : ${isBotAdmins}
 │
 └───────●⭓
 
+┌──●⭓ *kata kata*
+│
+│⭔ ${prefix}katailham
+│⭔ ${prefix}katakataml
+│⭔ ${prefix}katabucin
+│⭔ ${prefix}katabijak
+│⭔ ${prefix}katabucin2
+│⭔ ${prefix}katasindiran
+│⭔ ${prefix}quotesanime
+│
+└───────●⭓
+
 ┌──●⭓ *Random Menu*
 │
 │⭔ ${prefix}porno
 │⭔ ${prefix}hentai
-│⭔ ${prefix}quotesanime
 │⭔ ${prefix}loli
 │⭔ ${prefix}neko
 │⭔ ${prefix}waifu
@@ -619,6 +664,30 @@ Bot Admin : ${isBotAdmins}
 │
 └───────●
 
+┌──●⭓ * Riview Cek *
+│
+│${prefix}gantengcek
+│${prefix}cantikcek
+│${prefix}jelekcek
+│${prefix}goblokcek
+│${prefix}begocek
+│${prefix}pintarcek
+│${prefix}jagocek 
+│${prefix}nolepcek
+│${prefix}babicek 
+│${prefix}bebancek
+│${prefix}baikcek
+│${prefix}jahatcek 
+│${prefix}anjingcek
+│${prefix}haramcek
+│${prefix}kontolcek 
+│${prefix}pakboycek 
+│${prefix}pakgirlcek	
+│${prefix}sangecek
+│${prefix}bapercek
+│
+└───────●⭓
+
 ┌──● *Main Menu*
 │
 │⭔ ${prefix}ping
@@ -673,7 +742,7 @@ Bot Admin : ${isBotAdmins}
        case 'hlp':
 
        if (modelmenu == 'gif') {
-       await sendButton5(from, anuy, fake, await style.createMessage(from, {video: {url: "./media/styles.mp4", caption: anuy}, gifPlayback: true, gifAttribution: "CA"}))
+       await sendButton5(from, anuy, fake, await style.createMessage(from, {video: {url: "./media/style.mp4", caption: anuy}, gifPlayback: true, gifAttribution: "GUS"}))
        } 
 
        else if (modelmenu == 'image') 
@@ -694,6 +763,15 @@ Bot Admin : ${isBotAdmins}
 		   break
 	   }
 	   
+   case 'katailham':
+     anu = await fetchJson(`https://leyscoders-api.herokuapp.com/api/katailham?apikey=IkyOgiwara`)
+     m.reply(`*Random Kata Ilham*\n${anu.result}`)
+   break
+     case'katabucin': case'katabucin2': 
+     case'katasindiran': case'katabijak': case'katakataml':
+         kat = await fetchJson(`https://apidhani.herokuapp.com/api/random/${command}?apikey=NisaaCantik`)
+         m.reply(kat.result)
+   	   break
 	   case 'ytmp3':{
 	   if (!q) return m.reply('link nya cok')
 		  gusau = await y2mateA(q)
@@ -741,9 +819,8 @@ Bot Admin : ${isBotAdmins}
 		   style.sendMessage(m.chat, {document: {url: audio}, mimetype: 'audio/mpeg', fileName: `audio_tiktok.mp3`}, {quoted:m})
 		   break
 	   
-	   case 'mediafire':{
-		   if (!q) return m.reply('masukan link mediafire!')
-			   if (!isUrl) return
+	   case 'mediafire':{		 
+		   if (!q) return m.reply('masukan link mediafire!')			   
 		   dl = await fetchJson(`https://x-restapi.herokuapp.com/api/mediafire-dl?url=${q}&apikey=BETA`)
 		   url = dl.urlDown
 		   sendFileFromUrl(m.chat, url, m)
@@ -985,6 +1062,15 @@ Bot Admin : ${isBotAdmins}
 	  biba = `KBBI RESULT\n\nLema : ${bi.result.lema}\nArti : ${bi.result.arti}`
 	  style.sendMessage(m.chat, {text: biba}, {quoted: m})
 	  break
+	  
+	  case 'usa':
+	  case 'simih':	  
+  if (args.length == 0) return m.reply(`Text Nya Mana\nContoh: ${prefix + command} hai`)
+  boo = args.join(" ")
+  bll = await fetchJson(`https://apikey-bear3.herokuapp.com/api/f/simi?apikey=KingOfBear&query=${boo}`)
+  ini_txt =`*Simi: ${bll.result}*`
+  m.reply(ini_txt)
+  break
 	
 	case 'join': {
                 if (!isCreator) throw mess.owner
@@ -1108,7 +1194,7 @@ break
                     case 'faq':
               const buttons = [
   {buttonId: `${prefix}menu`, buttonText: {displayText: 'BACK TO MENU'}, type: 1},
-  {buttonId: '${prefix}faq22', buttonText: {displayText: 'Apa itu gus?'}, type: 1},
+  {buttonId: '${prefix}faq22', buttonText: {displayText: 'Apa itu GUS?'}, type: 1},
   {buttonId: '${prefix}faq33', buttonText: {displayText: 'Terinspirasi dsri mana?'}, type: 1}
 ]
 
@@ -1269,7 +1355,8 @@ style.sendMessage(from, buttonMessage)
                 result = anu[Math.floor(Math.random(), anu.length)]
                 style.sendMessage(m.chat, { image: { url: result }, caption: '⭔ Media Url : '+result }, { quoted: troli })
             }
-            break
+            break                       
+            
             case 'wallpaper': {
                 m.reply(mess.wait)
                 anu = await wallpaper(q)
@@ -1286,7 +1373,7 @@ var templatetun = proto.Message.fromObject({
                                     hydratedButtons: [{
                                         urlButton: {
                                             displayText: 'Github Owner',
-                                            url: 'https://github.com/gus-ID'
+                                            url: 'https://github.com/CAF-ID'
                                         }
                                     }, {
                                         callButton: {
@@ -1325,6 +1412,280 @@ break
 				   var Lirik = await fetchJson(`https://api.dapuhy.ga/api/socialmedia/liriklagu?query=${q}&apikey=sQMpXbHimbTkxGC`)
 style.sendMessage(from, {text: Lirik.result}, {quoted: m})
 break
+
+             case 'telesticker':
+                    case 'stickertele':
+                    if (args.length == 0) return m.reply(`Example: ${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG`)
+                    ini_url = args[0]
+                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/telestick?apikey=itschandra&url=${ini_url}`)
+                    ini_sticker = ini_url.result.sticker
+                    style.sendMessage(from, {image: ini_sticker}, {quoted: m})                    
+                  break       
+
+            case 'gantengcek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *GANTENGAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'cantikcek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *CANTIKAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}% :v*`
+            style.sendTextWithMentions(m.chat, N, m)
+            break
+            case 'jelekcek':             
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *J3L3K4N* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'goblokcek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *GOBLOKAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'begocek':
+            if (!m.isGroup) return m.style(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *BEGO* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'pintercek': 
+            case 'pintarcek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *PINTARAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'jagocek': 
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *JAGOAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'nolepcek': 
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *NOLEPAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'babicek': 
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *BABIAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'bebancek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *BEBANAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'baikcek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *BAIKAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'jahatcek': 
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *JAHATAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'anjingcek': 
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *ANJINGAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break              
+            case 'haramcek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *HARAMAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break  
+            case 'kontolcek': 
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *KOMTOLAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'pakboycek': 
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *PAKBOYZ* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break 
+            case 'pakgirlcek':	
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `KE *PAKGILR* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break             
+            case 'sangecek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `JIWA *SANGE* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break
+            case 'bapercek':
+            if (!m.isGroup) return m.reply(mess.group)
+            userscek = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+            num_user = userscek.replace('@s.whatsapp.net', '')
+            console.log(num_user)
+            angka = ['1','2','3','4','5','6','7','8','9']
+            randomcek1 = angka[Math.floor(Math.random() * (angka.length))]
+            randomcek2 = angka[Math.floor(Math.random() * (angka.length))]
+            if (!q) return m.reply('TAG ORANG NYA KAK')
+            N = `JIWA *BEPERAN* @${num_user}\n`
+            N += `ADALAH : *${randomcek1}${randomcek2}%* :v`
+            style.sendTextWithMentions(m.chat, N, m)
+            break
+
+           case 'ban':
+if (!isOwner) return sticOwner(from)
+bnnd = body.slice(5)
+ban.push(`${bnnd}@s.whatsapp.net`)
+fs.writeFileSync('./database/banned.json', JSON.stringify(ban))
+fakeText(`*@${bnnd}*\n_Telah Berhasil Dibanned ✓_`)
+break
+case 'unban':
+if (!isOwner) return sticOwner(from)
+bnnd = body.slice(7)
+ban.splice(`${bnnd}@s.whatsapp.ne5t`)
+fs.writeFileSync('./database/banned.json', JSON.stringify(ban))
+fakeText(`*@${bnnd}*\n_Telah Sukses Diunbanned ✓_`)
+break
+
             case 'wikimedia': {
                 m.reply(mess.wait)
                 anu = wikimedia(q)
@@ -1389,12 +1750,12 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             case 'owner': case 'creator': {
                 let vcard = 'BEGIN:VCARD\n' // metadata of the contact card
                     + 'VERSION:3.0\n' 
-                    + 'N:;AS;;;'
-                    + 'FN:AS•STYLE\n' // full name
-                    + 'ORG:Owner - STYLE;\n' // the organization of the contact
+                    + 'N:;GUS;;;'
+                    + 'FN:GUS•NAY\n' // full name
+                    + 'ORG:Owner - GUS;\n' // the organization of the contact
                     + 'TEL;type=CELL;type=VOICE;waid=6282268562601:+62 857-6217-9624\n' // WhatsApp ID + phone number
                     + 'END:VCARD'
-                style.sendMessage(m.chat, { contacts: { displayName: 'Owner - STYLE', contacts: [{ vcard }] } }, { quoted: troli })
+                style.sendMessage(m.chat, { contacts: { displayName: 'Owner - GUS', contacts: [{ vcard }] } }, { quoted: troli })
             }
             break
 			case 'kick': {
@@ -1625,11 +1986,14 @@ case 'motivasi': case 'dilanquote': case 'bucinquote': case 'katasenja': case 'p
                 }
                 style.sendMessage(from, buttonMessage, { quoted: mek })
             }
-            break
+            break           
 
             case 'anime': case 'waifu': case 'husbu': case 'neko': case 'shinobu': case 'megumin':
                 buffer = await getBuffer(`https://zenzapi.xyz/api/random/${command}?apikey=${apikey}`) 
                 style.sendMessage(from, { image: buffer, caption: 'Generate Random ' + command }, { quoted: mek })
+            break
+            case'banar':            
+            if (isBanned) return sticBanned(from)
             break
 /////////////////////////BATASNYA ASU///////////////////            
                             
@@ -1749,7 +2113,7 @@ case 'motivasi': case 'dilanquote': case 'bucinquote': case 'katasenja': case 'p
                     })
                 }
         }
-      if (budy.includes('STYLE')) {  
+      if (budy.includes('GUS')) {  
 style.sendMessage(m.chat, {text: 'Hmmm....'}, {quoted: peksaya})
 	  }	  
 
