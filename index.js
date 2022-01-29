@@ -49,7 +49,7 @@ async function startstyle() {
         }
     })
 
-style.ev.on('group-participants.update', async (anu) => {
+    style.ev.on('group-participants.update', async (anu) => {
         console.log(anu)
         try {
             let metadata = await style.groupMetadata(anu.id)
@@ -59,44 +59,21 @@ style.ev.on('group-participants.update', async (anu) => {
                 try {
                     ppuser = await style.profilePictureUrl(num, 'image')
                 } catch {
-                    ppuser = 'https://telegra.ph/file/bff9f7939175383e186e1.jpg'
+                    ppuser = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
                 // Get Profile Picture Group
                 try {
                     ppgroup = await style.profilePictureUrl(anu.id, 'image')
                 } catch {
-                    ppgroup = 'https://telegra.ph/file/bff9f7939175383e186e1.jpg'
+                    ppgroup = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
                 if (anu.action == 'add') {
-                    let buttonLoc = [
-                    {buttonId: `id`, buttonText: {displayText: '☰ PING!'}, type: 1},
-                    {buttonId: `id`, buttonText: {displayText: '☰ Owner'}, type: 1}
-                ]
-                let buttonMessageLoc = {
-                    location: { degreesLatitude: 0, degreesLongitude: 0, jpegThumbnail: loc_img },
-                    caption: 'Hello World',
-                    footerText: fake,
-                    buttons: buttonLoc,
-                    headerType: 4
-                }
-                style.sendMessage(from, buttonMessageLoc)
+                    style.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `Welcome To ${metadata.subject} @${num.split("@")[0]}` })
                 } else if (anu.action == 'remove') {
-                    let loc_img = fs.readFileSync('./media/style.jpg')
-let buttonLoc = [
-                    {buttonId: `id`, buttonText: {displayText: '☰ PING!'}, type: 1},
-                    {buttonId: `id`, buttonText: {displayText: '☰ Owner'}, type: 1}
-                ]
-                let buttonMessageLoc = {
-                    location: { degreesLatitude: 0, degreesLongitude: 0, jpegThumbnail: loc_img },
-                    caption: 'Hello World',
-                    footerText: fake,
-                    buttons: buttonLoc,
-                    headerType: 4
+                    style.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `@${num.split("@")[0]} Leaving from ${metadata.subject}` })
                 }
-                style.sendMessage(from, buttonMessageLoc)               
-                 }
             }
         } catch (err) {
             console.log(err)
