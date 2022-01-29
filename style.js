@@ -1145,7 +1145,7 @@ style.sendMessage(from, buttonMessage)
         arg = args.join(' ')
         atas = arg.split('|')[0]
         bawah = arg.split('|')[1]
-        let abeb = await alpha.downloadAndSaveMediaMessage(quoted)
+        let abeb = await style.downloadAndSaveMediaMessage(quoted)
         let abe = await TelegraPh(abeb)
         let upz = `https://api.memegen.link/images/custom/${atas}/${bawah}.png?background=${util.format(abe)}`
         let mengmeme = await style.sendImageAsSticker(m.chat, upz, m, { packname: global.packname, author: global.author })
