@@ -1140,7 +1140,7 @@ style.sendMessage(from, buttonMessage)
             break
             
       case 'memegen': case 'smeme': {
-        if (!q) return m.reply`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks|teks*`)
+        if (!q) return m.reply(`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks|teks*`)
         m.reply(mess.wait)
         arg = args.join(' ')
         atas = arg.split('|')[0]
