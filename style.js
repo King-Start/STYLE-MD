@@ -1138,6 +1138,20 @@ style.sendMessage(from, buttonMessage)
                 }
             }
             break
+            
+      case 'memegen': case 'smeme': {
+        if (!q) return m.reply`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks|teks*`)
+        m.reply(mess.wait)
+        arg = args.join(' ')
+        atas = arg.split('|')[0]
+        bawah = arg.split('|')[1]
+        let abeb = await alpha.downloadAndSaveMediaMessage(quoted)
+        let abe = await TelegraPh(abeb)
+        let upz = `https://api.memegen.link/images/custom/${atas}/${bawah}.png?background=${util.format(abe)}`
+        let mengmeme = await style.sendImageAsSticker(m.chat, upz, m, { packname: global.packname, author: global.author })
+        await fs.unlinkSync(mengmeme)
+        }
+       break
                         
 	    case 'tomp4': case 'tovideo': {
                 if (!quoted) throw 'Reply Image'
