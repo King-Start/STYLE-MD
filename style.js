@@ -1140,8 +1140,9 @@ style.sendMessage(from, buttonMessage)
             break
             
       case 'memegen': case 'smeme': {
-        if (!quoted) return m.reply(`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks|teks*`)
-        if (!isGroup) return m.reply(`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks|teks*`)
+        if (!text) return reply(`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks|teks*`)
+        if (!text.includes('|')) return reply(`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks|teks*`)
+        if (!/image/.test(mime)) return reply(`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks|teks*`)
         m.reply(mess.wait)
         arg = args.join(' ')
         atas = arg.split('|')[0]
