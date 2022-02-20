@@ -13,7 +13,7 @@ AnyMessageContent,
 delay, 
 useSingleFileAuthState 
 } = require('@adiwajshing/baileys-md')
-const { state, loadState, saveState } = useSingleFileAuthState(`./${sessionName}.json`)
+const { state, loadState, saveState } = useSingleFileAuthState(`./agus.json`)
 const pino = require('pino')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/exif')
 const fs = require('fs')
@@ -24,79 +24,70 @@ const { smsg, isUrl, generateMessageTag } = require('./lib/myfunc')
 
 global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '')
 
-async function startcafnay() {
-    const cafnay = makeWASocket({
+
+function getVersionWaweb() {
+    let version
+    try {
+        let a = axios.get('https://web.whatsapp.com/check-update?version=1&platform=web')
+        version = [a.data.currentVersion.replace(/[.]/g, ', ')]
+    } catch {
+        version = [2, 2204, 13]
+    }
+    return version
+}
+
+getVersionWaweb()
+
+async function startstyle() {
+    const style = makeWASocket({
         logger: pino({ level: 'silent' }),
         printQRInTerminal: true,
-        browser: ['CAFNAY Multi Device','Safari','1.0.0'],
+        browser: ['style Multi Device','Safari','1.0.0'],
         auth: state,
-        version: [2, 2204, 13]
+        version: getVersionWaweb()
     })
 
-    cafnay.ev.on('messages.upsert', async chatUpdate => {
+    style.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
         try {
         mek = chatUpdate.messages[0]
         if (!mek.message) return
         mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
         if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-        if (!cafnay.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+        if (!style.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
         if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
-        m = smsg(cafnay, mek)
-        require("./cafnay")(cafnay, m, chatUpdate)
+        m = smsg(style, mek)
+        require("./style")(style, m, chatUpdate)
         } catch (err) {
             console.log(err)
         }
     })
 
-cafnay.ev.on('group-participants.update', async (anu) => {
+    style.ev.on('group-participants.update', async (anu) => {
         console.log(anu)
         try {
-            let metadata = await cafnay.groupMetadata(anu.id)
+            let metadata = await style.groupMetadata(anu.id)
             let participants = anu.participants
             for (let num of participants) {
                 // Get Profile Picture User
                 try {
-                    ppuser = await cafnay.profilePictureUrl(num, 'image')
+                    ppuser = await style.profilePictureUrl(num, 'image')
                 } catch {
-                    ppuser = 'https://telegra.ph/file/bff9f7939175383e186e1.jpg'
+                    ppuser = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
                 // Get Profile Picture Group
                 try {
-                    ppgroup = await cafnay.profilePictureUrl(anu.id, 'image')
+                    ppgroup = await style.profilePictureUrl(anu.id, 'image')
                 } catch {
-                    ppgroup = 'https://telegra.ph/file/bff9f7939175383e186e1.jpg'
+                    ppgroup = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
                 if (anu.action == 'add') {
-                    let buttonLoc = [
-                    {buttonId: `id`, buttonText: {displayText: '☰ PING!'}, type: 1},
-                    {buttonId: `id`, buttonText: {displayText: '☰ Owner'}, type: 1}
-                ]
-                let buttonMessageLoc = {
-                    location: { degreesLatitude: 0, degreesLongitude: 0, jpegThumbnail: loc_img },
-                    caption: 'Hello World',
-                    footerText: fake,
-                    buttons: buttonLoc,
-                    headerType: 4
-                }
-                cafnay.sendMessage(from, buttonMessageLoc)
+                    style.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `Welcome To ${metadata.subject} @${num.split("@")[0]}` })
                 } else if (anu.action == 'remove') {
-                    let loc_img = fs.readFileSync('./media/cafnay.jpg')
-let buttonLoc = [
-                    {buttonId: `id`, buttonText: {displayText: '☰ PING!'}, type: 1},
-                    {buttonId: `id`, buttonText: {displayText: '☰ Owner'}, type: 1}
-                ]
-                let buttonMessageLoc = {
-                    location: { degreesLatitude: 0, degreesLongitude: 0, jpegThumbnail: loc_img },
-                    caption: 'Hello World',
-                    footerText: fake,
-                    buttons: buttonLoc,
-                    headerType: 4
+                    style.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `@${num.split("@")[0]} Leaving from ${metadata.subject}` })
                 }
-                cafnay.sendMessage(from, buttonMessageLoc)               
-                 }
             }
         } catch (err) {
             console.log(err)
@@ -104,18 +95,18 @@ let buttonLoc = [
     })
 	
     // Setting
-    cafnay.public = true
-    cafnay.modelmenu = "gif"
+    style.public = true
+    style.modelmenu = "gif"
 
-    cafnay.ev.on('connection.update', async (update) => {
+    style.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect } = update
         if (connection === 'close') {
-            lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut ? startcafnay() : console.log('Koneksi Terputus...')
+            lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut ? startstyle() : console.log('Koneksi Terputus...')
         }
         console.log('Koneksi Terhubung...', update)
     })
 
-    cafnay.ev.on('creds.update', saveState)
+    style.ev.on('creds.update', saveState)
 
     // Add Other
 
@@ -127,7 +118,7 @@ let buttonLoc = [
      * @param {*} options 
      * @returns 
      */
-    cafnay.sendText = (jid, text, quoted = '', options) => cafnay.sendMessage(jid, { text: text, ...options }, { quoted })
+    style.sendText = (jid, text, quoted = '', options) => style.sendMessage(jid, { text: text, ...options }, { quoted })
 
     /**
      * 
@@ -138,9 +129,9 @@ let buttonLoc = [
      * @param {*} options 
      * @returns 
      */
-    cafnay.sendImage = async (jid, path, caption = '', quoted = '', options) => {
+    style.sendImage = async (jid, path, caption = '', quoted = '', options) => {
         let buffer = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await fetch(path)).buffer() : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-        return await cafnay.sendMessage(jid, { image: buffer, caption: caption, ...options }, { quoted })
+        return await style.sendMessage(jid, { image: buffer, caption: caption, ...options }, { quoted })
     }
 
     /**
@@ -152,9 +143,9 @@ let buttonLoc = [
      * @param {*} options 
      * @returns 
      */
-    cafnay.sendVideo = async (jid, path, gif = false, caption = '', quoted = '', options) => {
+    style.sendVideo = async (jid, path, gif = false, caption = '', quoted = '', options) => {
         let buffer = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await fetch(path)).buffer() : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-        return await cafnay.sendMessage(jid, { video: buffer, caption: caption, gifPlayback: gif, ...options }, { quoted })
+        return await style.sendMessage(jid, { video: buffer, caption: caption, gifPlayback: gif, ...options }, { quoted })
     }
 
     /**
@@ -166,9 +157,9 @@ let buttonLoc = [
      * @param {*} options 
      * @returns 
      */
-    cafnay.sendAudio = async (jid, path, quoted = '', ptt = false, options) => {
+    style.sendAudio = async (jid, path, quoted = '', ptt = false, options) => {
         let buffer = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await fetch(path)).buffer() : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-        return await cafnay.sendMessage(jid, { audio: buffer, ptt: ptt, ...options }, { quoted })
+        return await style.sendMessage(jid, { audio: buffer, ptt: ptt, ...options }, { quoted })
     }
     
     /**
@@ -179,7 +170,7 @@ let buttonLoc = [
      * @param {*} options 
      * @returns 
      */
-    cafnay.sendTextWithMentions = async (jid, text, quoted, options = {}) => cafnay.sendMessage(jid, { text: text, contextInfo: { mentionedJid: [...text.matchAll(/@(\d{0,16})/g)].map(v => v[1] + '@s.whatsapp.net') }, ...options }, { quoted })
+    style.sendTextWithMentions = async (jid, text, quoted, options = {}) => style.sendMessage(jid, { text: text, contextInfo: { mentionedJid: [...text.matchAll(/@(\d{0,16})/g)].map(v => v[1] + '@s.whatsapp.net') }, ...options }, { quoted })
 
     /**
      * 
@@ -189,7 +180,7 @@ let buttonLoc = [
      * @returns 
      */
 	 
-	  cafnay.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
+	  style.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
         let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await fetch(path)).buffer() : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
         let buffer
         if (options && (options.packname || options.author)) {
@@ -198,7 +189,7 @@ let buttonLoc = [
             buffer = await imageToWebp(buff)
         }
 
-        await cafnay.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
+        await style.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
         return buffer
     }
 
@@ -210,7 +201,7 @@ let buttonLoc = [
      * @param {*} options 
      * @returns 
      */
-    cafnay.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
+    style.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
         let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await getBuffer(path) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
         let buffer
         if (options && (options.packname || options.author)) {
@@ -219,7 +210,7 @@ let buttonLoc = [
             buffer = await videoToWebp(buff)
         }
 
-        await cafnay.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
+        await style.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
         return buffer
     }
 	 
@@ -228,7 +219,7 @@ let buttonLoc = [
 	 
 	 
 	 
-    cafnay.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
+    style.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
         let mime = (message.msg || message).mimetype || ''
         let messageType = mime.split('/')[0]
         let extension = mime.split('/')[1]
@@ -251,7 +242,7 @@ let buttonLoc = [
      * @param {*} options 
      * @returns 
      */
-    cafnay.copyNForward = async (jid, message, forceForward = false, options = {}) => {
+    style.copyNForward = async (jid, message, forceForward = false, options = {}) => {
         let vtype
 		if (options.readViewOnce) {
 			message.message = message.message && message.message.ephemeralMessage && message.message.ephemeralMessage.message ? message.message.ephemeralMessage.message : (message.message || undefined)
@@ -282,7 +273,7 @@ let buttonLoc = [
                 }
             } : {})
         } : {})
-        await cafnay.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
+        await style.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
         return waMessage
     }
 
@@ -291,7 +282,7 @@ let buttonLoc = [
      * @param {*} path 
      * @returns 
      */
-    cafnay.getFile = async (path) => {
+    style.getFile = async (path) => {
         let res
 		let data = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,` [1], 'base64') : /^https?:\/\//.test(path) ? await (res = await fetch(path)).buffer() : fs.existsSync(path) ? fs.readFileSync(path) : typeof path === 'string' ? path : Buffer.alloc(0)
 		if (!Buffer.isBuffer(data)) throw new TypeError('Result is not a buffer')
@@ -307,10 +298,10 @@ let buttonLoc = [
 		}
     }
 
-    return cafnay
+    return style
 }
 
-startcafnay()
+startstyle()
 
 
 let file = require.resolve(__filename)
